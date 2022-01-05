@@ -1,0 +1,21 @@
+{% extends "partial.html" %}
+{% block body %}
+<body>
+    <div class="container">
+        <h3>{{ pret }}</h3>
+        <div class="row">
+            <div class="col">
+                {% for game in games %}
+                    <span>{{ game.time }}</span>
+                    <br>
+                    <span>{{ game.homeTeam }}: {{ game.homeScore }}</span>
+                    <br>
+                    <span>{{ game.awayTeam }}: {{ game.awayScore }}<span>
+                    <br>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
