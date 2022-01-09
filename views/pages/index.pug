@@ -1,0 +1,19 @@
+html
+    head
+        title Crunchtime
+        style
+            include ../../public/styling.css
+        script
+            include ../../public/update.js
+            
+
+    body(onload="getLive()")        
+        #main
+            h1 Crunchtime
+            | Live Scores
+            br
+            br
+
+        #games(class="scoreboard")
+
+        #current(class="player")
