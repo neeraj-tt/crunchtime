@@ -1,3 +1,11 @@
+.scoreboard {
+    text-align: center;
+    position: relative;
+    margin: 1em auto;
+    width: 75em;
+    height: 2em;
+  }
+
 .game {
     float: left;
     width: 200px;
@@ -5,4 +13,23 @@
     margin-top: 10px;
     padding: 5px;
     border: 2px solid rgb(0, 0, 0);
-  }
+    text-align: center;
+}
+
+.gameShowing {
+    background-color: rgb(45, 139, 73);
+    float: left;
+    width: 200px;
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 5px;
+    border: 2px solid rgb(0, 0, 0);
+    text-align: center;
+}
+
+.player {
+    margin:0 auto;
+    width:80%;
+    height:80%;
+}
+

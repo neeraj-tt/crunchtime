@@ -1,6 +1,4 @@
-from typing import Mapping
-from flask import Flask
-from flask import render_template
+from flask import Flask, render_template
 
 from datetime import datetime, timezone
 from dateutil import parser
@@ -9,6 +7,11 @@ import time
 from nba_api.live.nba.endpoints import scoreboard
 
 app = Flask(__name__)
+
+@socketio.on('message')
+def handle(msg):
+    print('Message: ' + msg)
+    send(msg, broadcast=True)
 
 @app.route("/")
 def index():
@@ -35,8 +38,9 @@ def getGames():
     return arr
 
 if __name__ == "__main__":
+    socketio.run(app)
     # app.run(threaded=True)
-    app.run(host="0.0.0.0", port=8080, threaded=True, debug=True)
+    # app.run(host="0.0.0.0", port=8080, threaded=True, debug=True)
 
 # print(json.dumps(box.game.get_dict(), indent=2))
 # scoreFormat = "{time}\n{homeTeam}: {homeScore}\n{awayTeam}: {awayScore}"
