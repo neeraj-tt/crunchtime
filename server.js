@@ -15,12 +15,16 @@ db.once('open', function() {
 //View engine
 app.set("view engine", "pug");
 
-//Set up the routes
 app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(express.json());
 
 
+var favicon = require('serve-favicon');
+
+app.use(favicon('public/images/favicon.png'));
+
+//Set up the routes
 app.route("/")
 .get((req, res) => {
     res.render("pages/index");

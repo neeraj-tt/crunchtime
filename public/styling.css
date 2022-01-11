@@ -1,35 +1,73 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto Condensed');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #D1D1D1;
+}
+
+.header {
+    padding: 20px;
+    text-align: center;
+    background: #000000;
+    color: #be9e44;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 14px;
+  }
+
 .scoreboard {
     text-align: center;
     position: relative;
     margin: 1em auto;
-    width: 75em;
-    height: 2em;
-  }
+    width: 60em;
+    height: auto;
+}
 
 .game {
-    float: left;
+    display: inline-block;
     width: 200px;
     margin-left: 10px;
     margin-top: 10px;
     padding: 5px;
     border: 2px solid rgb(0, 0, 0);
+    border-radius: 25px; /* 10 or 25 or 50 */
     text-align: center;
 }
 
 .gameShowing {
-    background-color: rgb(45, 139, 73);
-    float: left;
+    background-color: #be9e44;
+    display: inline-block;
     width: 200px;
     margin-left: 10px;
     margin-top: 10px;
     padding: 5px;
     border: 2px solid rgb(0, 0, 0);
+    border-radius: 25px;
     text-align: center;
+    animation: fadeIn linear 1s;
 }
 
 .player {
-    margin:0 auto;
-    width:80%;
-    height:80%;
+    position: relative; 
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Roboto Condensed", sans-serif;
+    text-align: center;
+    /* border: 2px solid #CBB26A; */
+    margin-bottom: 1%;
+}
+
+img {
+    content:url(".././public/images/favicon.png");
+    float: left;
+    width: 35px;
+}
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
 }
 

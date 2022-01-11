@@ -22,9 +22,9 @@ function getLive() {
 					newDiv.setAttribute("id", x[i].homeTeam);
 					newDiv.setAttribute("class", "game");
 					document.getElementById("games").appendChild(newDiv);
-					newDiv.innerHTML += x[i].time + "<br>" + x[i].homeTeam + ": " + x[i].homeScore + "<br>" + x[i].awayTeam + ": " + x[i].awayScore + "<br>";
+					newDiv.innerHTML += "<strong>" + x[i].time + "</strong><br>" + x[i].homeTeam + ": " + x[i].homeScore + "<br>" + x[i].awayTeam + ": " + x[i].awayScore + "<br>";
 				} else {
-					gameToEdit.innerHTML = x[i].time + "<br>" + x[i].homeTeam + ": " + x[i].homeScore + "<br>" + x[i].awayTeam + ": " + x[i].awayScore + "<br>";
+					gameToEdit.innerHTML = "<strong>" + x[i].time + "</strong><br>" + x[i].homeTeam + ": " + x[i].homeScore + "<br>" + x[i].awayTeam + ": " + x[i].awayScore + "<br>";
 				}
 				// // if 4th quarter and game within 10
 				// // OR game in overtime, then show this game
@@ -43,6 +43,7 @@ function getLive() {
 					let match = curr.rem.match(/\d+/g);
 					mins = parseInt(match[0]);
 					sec = parseInt(match[1]);
+					ms = parseInt(match[2]);
 
 					sec += (60 * mins);
 					if (curr.period == 1) {
@@ -52,9 +53,12 @@ function getLive() {
 					} else if (curr.period == 3) {
 						sec += (12 * 60);
 					}
-					// console.log(curr.homeTeam + ": sec remaining " +  sec)
-					if (closestGame == -1 || sec < closestGame) {
+					// switch game if game in 4th quarter or overtime, within 10 and with less time remaining than current game
+					// or if current game is over
+					if (closestGame == -1 || (sec < closestGame && (Math.abs(x[j].homeScore - x[j].awayScore) < 10) && x[j].period >= 4) || closestGame == 0) {
+					// if (closestGame == -1 || (sec < closestGame)) {
 						closestGame = sec;
+						console.log(closestGame);
 						newGame = x[j].homeTeam;
 						let newGameElem = document.getElementById(newGame);
 						newGameElem.setAttribute("class", "gameShowing");
@@ -68,7 +72,7 @@ function getLive() {
 							let temp = newGame.split(" ");
 							let gameURL = temp[temp.length-1].toLowerCase();
 							let liveGame = document.getElementById("current");
-							liveGame.innerHTML = "<iframe frameborder=0 height=80% width=80% src=\"http://givemenbastreams.com/nba.php?g=" + gameURL + "\" allowfullscreen scrolling=no allowtransparency></iframe>"
+							liveGame.innerHTML = "<iframe frameborder=0 height=80% width=80% class=\"player\" src=\"http://givemenbastreams.com/nba.php?g=" + gameURL + "\" allow =\"autoplay\" allowfullscreen scrolling=no allowtransparency></iframe>"
 						}
 					}
 				}

@@ -1,6 +1,7 @@
 html
     head
         title Crunchtime
+        <link rel="icon" type="image/png" href="/images/favicon.png"/>
         style
             include ../../public/styling.css
         script
@@ -8,10 +9,13 @@ html
             
 
     body(onload="getLive()")        
-        #header
-            h1 Crunchtime
-            br
+        #header(class="header")
+            img(src="/images/favicon.png" class="img")
+            h1 crunchtime
 
         #games(class="scoreboard")
 
-        #current(class="player")
+        br
+
+        #current
+            h3(class="player") No games on right now
