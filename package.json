@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/neeraj-tt/crunchtime#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
+    "mongoose": "^6.1.6"
   }
 }

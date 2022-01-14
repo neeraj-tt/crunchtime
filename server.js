@@ -20,9 +20,9 @@ app.use(express.static("public"));
 app.use(express.json());
 
 
-var favicon = require('serve-favicon');
+// var favicon = require('serve-favicon');
 
-app.use(favicon('public/images/favicon.png'));
+// app.use(favicon('public/images/favicon.png'));
 
 //Set up the routes
 app.route("/")
