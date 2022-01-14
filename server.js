@@ -28,6 +28,7 @@ app.route("/")
     var coll = db.collection("games").find({}).toArray(function(err, result) {
         if (err) throw err;
         res.status(201).send(result);
+        console.log("yo");
         res.end();
     });    
 });
