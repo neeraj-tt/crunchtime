@@ -4,7 +4,7 @@ const session = require('express-session')
 const app = express();
 const mongoose = require("mongoose");
 
-mongoose.connect('mongodb://localhost/crunchtime', {useNewUrlParser: true});
+mongoose.connect('mongodb+srv://admin:admin@cluster0.aeen5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true});
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -39,5 +39,5 @@ app.route("/")
 });
 
 // Start server
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 console.log("Listening on port 3000");

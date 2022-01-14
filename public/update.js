@@ -12,7 +12,6 @@ function getLive() {
 
 	req.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 201){
-			console.log("refresh");
 			let data = req.responseText;
 			let x = JSON.parse(data);
 			for (i = 0; i < x.length; i++) {				
@@ -58,7 +57,6 @@ function getLive() {
 					if (closestGame == -1 || (sec < closestGame && (Math.abs(x[j].homeScore - x[j].awayScore) < 10) && x[j].period >= 4) || closestGame == 0) {
 					// if (closestGame == -1 || (sec < closestGame)) {
 						closestGame = sec;
-						console.log(closestGame);
 						newGame = x[j].homeTeam;
 						let newGameElem = document.getElementById(newGame);
 						newGameElem.setAttribute("class", "gameShowing");
@@ -67,8 +65,7 @@ function getLive() {
 								let oldGameElem = document.getElementById(oldGame);
 								oldGameElem.setAttribute("class", "game");
 							}
-							oldGame = newGame
-							console.log(newGame);
+							oldGame = newGame;
 							let temp = newGame.split(" ");
 							let gameURL = temp[temp.length-1].toLowerCase();
 							let liveGame = document.getElementById("current");

@@ -1,8 +1,10 @@
 from nba_api.live.nba.endpoints import scoreboard
 import time
 import pymongo
+import certifi
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+ca = certifi.where()
+myclient = pymongo.MongoClient("mongodb+srv://admin:admin@cluster0.aeen5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tlsCAFile=ca)
 mydb = myclient["crunchtime"]
 mycol = mydb["games"]
 
