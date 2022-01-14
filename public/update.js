@@ -15,6 +15,7 @@ function getLive() {
 			console.log("refresh");
 			let data = req.responseText;
 			let x = JSON.parse(data);
+			console.log(x);
 			for (i = 0; i < x.length; i++) {				
 				let gameToEdit = document.getElementById(x[i].homeTeam);
 				if (gameToEdit == null) {
