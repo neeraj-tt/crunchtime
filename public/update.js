@@ -71,7 +71,7 @@ function getLive() {
 							let temp = newGame.split(" ");
 							let gameURL = temp[temp.length-1].toLowerCase();
 							let liveGame = document.getElementById("current");
-							liveGame.innerHTML = "<iframe frameborder=0 height=80% width=80% class=\"player\" src=\"http://givemenbastreams.com/nba.php?g=" + gameURL + "\" allow =\"autoplay\" allowfullscreen scrolling=no allowtransparency></iframe>"
+							liveGame.innerHTML = "<iframe frameborder=0 height=80% width=80% class=\"player\" src=\"https://givemenbastreams.com/nba.php?g=" + gameURL + "\" allow =\"autoplay\" allowfullscreen scrolling=no allowtransparency></iframe>"
 						}
 					}
 				}
