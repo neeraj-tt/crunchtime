@@ -83,17 +83,3 @@ function getLive() {
     req.setRequestHeader("Content-Type", "application/json")
 	req.send();
 }
-
-function convertTime(str) {
-	console.log(str)
-}
-
-// function getLive() {
-//     db.collection("games").find(function(err, games) {
-//         if(err) {
-//             console.log(err);
-//         } else {
-//             console.log(games);
-//         }
-//     });    
-// }
