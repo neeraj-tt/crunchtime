@@ -27,8 +27,8 @@ app.route("/")
 .post((req, res) => {
     var coll = db.collection("games").find({}).toArray(function(err, result) {
         if (err) throw err;
+        console.log(result);
         res.status(201).send(result);
-        console.log("yo");
         res.end();
     });    
 });
