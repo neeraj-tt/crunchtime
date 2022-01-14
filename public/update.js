@@ -12,6 +12,7 @@ function getLive() {
 
 	req.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 201){
+			console.log("refresh");
 			let data = req.responseText;
 			let x = JSON.parse(data);
 			for (i = 0; i < x.length; i++) {				
