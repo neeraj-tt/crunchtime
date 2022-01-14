@@ -4,7 +4,7 @@ const session = require('express-session')
 const app = express();
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://admin:admin@cluster0.aeen5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://admin:admin@cluster0.aeen5.mongodb.net/crunchtime?retryWrites=true&w=majority");
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
