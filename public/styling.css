@@ -11,7 +11,6 @@ body {
 
 .header {
     padding: 20px;
-    text-align: center;
     background: #000000;
     color: #be9e44;
     font-family: "Roboto Condensed", sans-serif;
@@ -60,10 +59,15 @@ body {
     margin-bottom: 1%;
 }
 
-img {
-    content:url(".././public/images/favicon.png");
+.logo {
+    content:url(".././public/images/logo.png");
     float: left;
     width: 35px;
+    position: absolute;
+}
+
+.title {
+    text-align: center;
 }
 
 @keyframes fadeIn {
