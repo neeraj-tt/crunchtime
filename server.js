@@ -32,6 +32,14 @@ app.route("/")
     });    
 });
 
+
+
+app.route("/public/images/favicon.png")
+.get((req, res) => {
+    res.status(201).send(./ima);
+    res.end();
+})
+
 // Start server
 app.listen(process.env.PORT || 3000);
 //console.log("Listening on port 3000");
