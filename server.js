@@ -16,7 +16,7 @@ db.once('open', function() {
 app.set("view engine", "pug");
 
 app.use(express.urlencoded({extended: true}));
-app.use(express.static("public"));
+app.use("/public", express.static("public"));
 app.use(express.json());
 
 //Set up the routes
@@ -33,5 +33,5 @@ app.route("/")
 });
 
 // Start server
-app.listen(process.env.PORT || 3000);
+app.listen(3000);
 //console.log("Listening on port 3000");
