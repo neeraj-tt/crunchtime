@@ -4,7 +4,7 @@ window.setInterval(getLive, 5000);
 let oldGame = ""
 let newGame = ""
 
-let closestGame = -1;
+let excitability = -1;
 
 
 function getLive() {
@@ -54,9 +54,9 @@ function getLive() {
 					}
 					// switch game if game in 4th quarter or overtime, within 10 and with less time remaining than current game
 					// or if current game is over
-					if (closestGame == -1 || (sec < closestGame && (Math.abs(x[j].homeScore - x[j].awayScore) < 10) && x[j].period >= 4) || closestGame == 0) {
-					// if (closestGame == -1 || (sec < closestGame)) {
-						closestGame = sec;
+					if (excitability == -1 || (sec < excitability && (Math.abs(x[j].homeScore - x[j].awayScore) < 10) && x[j].period >= 4) || excitability == 0) {
+					// if (excitability == -1 || (sec < excitability)) {
+						excitability = sec;
 						newGame = x[j].homeTeam;
 						let newGameElem = document.getElementById(newGame);
 						newGameElem.setAttribute("class", "gameShowing");
