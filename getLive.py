@@ -4,7 +4,7 @@ import pymongo
 import certifi
 
 ca = certifi.where()
-myclient = pymongo.MongoClient("mongodb+srv://admin:<password>@cluster0.aeen5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tlsCAFile=ca)
+myclient = pymongo.MongoClient("mongodb+srv://admin:admin@cluster0.aeen5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tlsCAFile=ca)
 mydb = myclient["crunchtime"]
 mycol = mydb["games"]
 
@@ -24,6 +24,7 @@ while True:
             "period": game['period'],
             "rem": game['gameClock']
         }
+        print(game)
         mycol.insert_one(game)
         #print(scoreFormat.format(time = game['gameStatusText'], homeTeam=game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName'], homeScore = game['homeTeam']['score'], awayTeam=game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName'], awayScore=game['awayTeam']['score']))
     time.sleep(5)
