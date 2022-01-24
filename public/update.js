@@ -54,7 +54,7 @@ function getLive() {
 					}
 					// switch game if game in 4th quarter or overtime, within 10 and with less time remaining than current game
 					// or if current game is over
-					if (excitability == -1 || (sec < excitability && (Math.abs(x[j].homeScore - x[j].awayScore) < 10) && x[j].period >= 4) || sec == 0) {
+					if (excitability == -1 || (sec < excitability && (Math.abs(x[j].homeScore - x[j].awayScore) < 10) && x[j].period >= 4) || excitability == 0) {
 					// if (excitability == -1 || (sec < excitability)) {
 						excitability = sec;
 						newGame = x[j].homeTeam;
