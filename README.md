@@ -6,7 +6,7 @@ and most interesting games.
 
 - getLive.py must be running to get live data
 
-Visit at http://quiet-meadow-90374.herokuapp.com/
+Visit at quiet-meadow-90374.herokuapp.com/
 
 
 
