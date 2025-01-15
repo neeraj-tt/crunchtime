@@ -1,0 +1,24 @@
+doctype html
+html
+    head
+        title Crunchtime
+        link(rel="icon" type="image/png" href="/public/images/favicon.ico")
+        link(rel="stylesheet", href="/public/styling.css")
+        script(src="/public/update.js")
+    body(onload="getLive()")
+        #header.header
+            img.logo(src="/public/images/logo.png", alt="Crunchtime Logo")
+            h1.title crunchtime
+        #games.scoreboard
+        br
+        #current
+            h3.player No games on right now
+            iframe(
+                src="https://givemereddit.eu/nba/suns.html",
+                width="100%",
+                height="600",
+                frameborder="0",
+                allowfullscreen,
+                scrolling="no",
+                allowtransparency="true"
+            )
