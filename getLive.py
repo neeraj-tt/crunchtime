@@ -1,13 +1,69 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from nba_api.live.nba.endpoints import scoreboard, boxscore
-import math
+from nba_api.live.nba.endpoints import scoreboard
+import re
 
 app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:3000"])  # Allow only requests from Node.js server
+CORS(app, origins=["http://127.0.0.1:3000"]) # Allow only requests from Node.js server
 
-@app.route('/live_scores', methods=['GET'])
-    
+'''games = [
+    {
+        'gameId': '025',
+        'gameStatus': 2,
+        'gameStatusText': 'Q4 5:30',
+        'period': 4,
+        'gameClock': '5:30',
+        'homeTeam': {'teamCity': 'Toronto', 'teamName': 'Raptors', 'score': 102},
+        'awayTeam': {'teamCity': 'Houston', 'teamName': 'Rockets', 'score': 88},
+    },
+    {
+        'gameId': '026',
+        'gameStatus': 2,
+        'gameStatusText': 'Q3 9:45',
+        'period': 3,
+        'gameClock': '9:45',
+        'homeTeam': {'teamCity': 'Orlando', 'teamName': 'Magic', 'score': 58},
+        'awayTeam': {'teamCity': 'Golden State', 'teamName': 'Warriors', 'score': 74},
+    },
+    {
+        'gameId': '027',
+        'gameStatus': 2,
+        'gameStatusText': 'Q4 1:20',
+        'period': 4,
+        'gameClock': '1:20',
+        'homeTeam': {'teamCity': 'San Antonio', 'teamName': 'Spurs', 'score': 91},
+        'awayTeam': {'teamCity': 'Los Angeles', 'teamName': 'Clippers', 'score': 93},
+    },
+    {
+        'gameId': '028',
+        'gameStatus': 2,
+        'gameStatusText': 'Q2 4:50',
+        'period': 2,
+        'gameClock': '4:50',
+        'homeTeam': {'teamCity': 'Indiana', 'teamName': 'Pacers', 'score': 45},
+        'awayTeam': {'teamCity': 'Chicago', 'teamName': 'Bulls', 'score': 47},
+    },
+    {
+        'gameId': '029',
+        'gameStatus': 2,
+        'gameStatusText': 'Q5 3:10',
+        'period': 5,
+        'gameClock': '3:10',
+        'homeTeam': {'teamCity': 'Utah', 'teamName': 'Jazz', 'score': 116},
+        'awayTeam': {'teamCity': 'Memphis', 'teamName': 'Grizzlies', 'score': 118},
+    },
+    {
+        'gameId': '030',
+        'gameStatus': 2,
+        'gameStatusText': 'Q1 8:15',
+        'period': 1,
+        'gameClock': '8:15',
+        'homeTeam': {'teamCity': 'Detroit', 'teamName': 'Pistons', 'score': 10},
+        'awayTeam': {'teamCity': 'Cleveland', 'teamName': 'Cavaliers', 'score': 18},
+    },
+]'''
+
+@app.route('/live_scores', methods=['GET'])    
 def get_live_scores():
     board = scoreboard.ScoreBoard()
     games = board.games.get_dict()
@@ -16,19 +72,35 @@ def get_live_scores():
     for game in games:
         updates.append({
             "time": game['gameStatusText'],
-            "homeTeam": game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName'],
+            "homeCity": game['homeTeam']['teamCity'],
+            "homeTeam": game['homeTeam']['teamName'],
+            "homeTricode": game['homeTeam']['teamTricode'],
             "homeScore": game['homeTeam']['score'],
-            "awayTeam": game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName'],
+            "awayCity": game['awayTeam']['teamCity'],
+            "awayTeam": game['awayTeam']['teamName'],
+            "awayTricode": game['awayTeam']['teamTricode'],
             "awayScore": game['awayTeam']['score'],
             "period": game['period'],
-            "rem": game['gameClock']
+            "rem": game['gameClock'],
+            "exciting": excitement_score(game)
         })
+        
+    response = {
+        "updates": updates,
+        "mostExciting": most_exciting()
+    }
 
-    return jsonify(updates)
+    return jsonify(response)
 
-# Determine which game is the most exciting
-
+# Give each game a "score" in terms of how exciting it is
 def excitement_score(game):
+
+    if game['gameStatus'] == 1:
+        return -1
+    
+    if ("Half") in game['gameStatusText']:
+        return -1
+    
     home_score = game['homeTeam']['score']
     away_score = game['awayTeam']['score']
     rem = time_remaining(game)
@@ -38,7 +110,7 @@ def excitement_score(game):
     q4_bonus = 1 if period == 4 else 0
     overtime_bonus = 1 if period > 4 else 0
 
-    w1, w2, w3, w4 = 0.5, 50, 1, 1.25
+    w1, w2, w3, w4 = 0.5, 100, 1, 1.25
 
     excitement_score = (
         w1 * (1 / max(score_differential, 1)) +     # Closer scores are better
@@ -49,110 +121,10 @@ def excitement_score(game):
 
     return excitement_score
 
+# Rank the games by their excitement score
 def most_exciting():
     board = scoreboard.ScoreBoard()
-    #games = board.games.get_dict()
-    games = [
-    {
-        'gameId': '009',
-        'gameStatus': 2,
-        'gameStatusText': 'Q2 7:30',
-        'period': 2,
-        'gameClock': '7:30',
-        'homeTeam': {'teamCity': 'Nets', 'teamName': 'Brooklyn', 'score': 49},
-        'awayTeam': {'teamCity': 'Pacers', 'teamName': 'Indiana', 'score': 45},
-    },
-    {
-        'gameId': '010',
-        'gameStatus': 2,
-        'gameStatusText': 'Q4 4:50',
-        'period': 4,
-        'gameClock': '4:50',
-        'homeTeam': {'teamCity': 'Bucks', 'teamName': 'Milwaukee', 'score': 95},
-        'awayTeam': {'teamCity': 'Raptors', 'teamName': 'Toronto', 'score': 96},
-    },
-    {
-        'gameId': '011',
-        'gameStatus': 2,
-        'gameStatusText': 'Q3 6:00',
-        'period': 3,
-        'gameClock': '6:00',
-        'homeTeam': {'teamCity': 'Hornets', 'teamName': 'Charlotte', 'score': 72},
-        'awayTeam': {'teamCity': 'Magic', 'teamName': 'Orlando', 'score': 70},
-    },
-    {
-        'gameId': '012',
-        'gameStatus': 2,
-        'gameStatusText': 'Q1 4:20',
-        'period': 1,
-        'gameClock': '4:20',
-        'homeTeam': {'teamCity': 'Jazz', 'teamName': 'Utah', 'score': 28},
-        'awayTeam': {'teamCity': 'Trail Blazers', 'teamName': 'Portland', 'score': 30},
-    },
-    {
-        'gameId': '013',
-        'gameStatus': 2,
-        'gameStatusText': 'Q5 2:30',
-        'period': 5,
-        'gameClock': '2:30',
-        'homeTeam': {'teamCity': 'Grizzlies', 'teamName': 'Memphis', 'score': 116},
-        'awayTeam': {'teamCity': 'Timberwolves', 'teamName': 'Minnesota', 'score': 118},
-    },
-    {
-        'gameId': '014',
-        'gameStatus': 2,
-        'gameStatusText': 'Q4 1:10',
-        'period': 4,
-        'gameClock': '1:10',
-        'homeTeam': {'teamCity': 'Cavaliers', 'teamName': 'Cleveland', 'score': 101},
-        'awayTeam': {'teamCity': 'Pistons', 'teamName': 'Detroit', 'score': 104},
-    },
-    {
-        'gameId': '015',
-        'gameStatus': 2,
-        'gameStatusText': 'Q2 10:00',
-        'period': 2,
-        'gameClock': '10:00',
-        'homeTeam': {'teamCity': 'Kings', 'teamName': 'Sacramento', 'score': 40},
-        'awayTeam': {'teamCity': 'Wizards', 'teamName': 'Washington', 'score': 38},
-    },
-    {
-        'gameId': '016',
-        'gameStatus': 2,
-        'gameStatusText': 'Q4 0:30',
-        'period': 4,
-        'gameClock': '0:30',
-        'homeTeam': {'teamCity': 'Pelicans', 'teamName': 'New Orleans', 'score': 109},
-        'awayTeam': {'teamCity': 'Spurs', 'teamName': 'San Antonio', 'score': 108},
-    },
-    {
-        'gameId': '017',
-        'gameStatus': 2,
-        'gameStatusText': 'Q3 9:15',
-        'period': 3,
-        'gameClock': '9:15',
-        'homeTeam': {'teamCity': 'Rockets', 'teamName': 'Houston', 'score': 62},
-        'awayTeam': {'teamCity': 'Warriors', 'teamName': 'Golden State', 'score': 71},
-    },
-    {
-        'gameId': '018',
-        'gameStatus': 2,
-        'gameStatusText': 'Q1 11:45',
-        'period': 1,
-        'gameClock': '11:45',
-        'homeTeam': {'teamCity': 'Thunder', 'teamName': 'Oklahoma City', 'score': 2},
-        'awayTeam': {'teamCity': 'Mavericks', 'teamName': 'Dallas', 'score': 0},
-    },
-]
-
-
-
-    # x = boxscore.BoxScore(game_id='0022400501')
-    # game_data = x.get_dict()
-
-    # print(game_data)
-
-    # if 
+    games = board.games.get_dict()
 
     games_list = []
     for game in games:
@@ -161,19 +133,44 @@ def most_exciting():
             games_list.append((game, game_score))
 
     games_list.sort(key=lambda x: x[1], reverse=True)
+    
+    if games_list:
+        top = games_list[0][0]
 
-    for game, score in games_list:
-        home = game['homeTeam']
-        away = game['awayTeam']
-        print(f"{home['teamCity']} {home['score']}, {away['teamCity']} {away['score']} -- Time Remaining: Q{game['period']} {game['gameClock']} -- Excitement Factor: {score:.4f}")
-        print(f"http://topstreams.info/nba/{game['homeTeam']['teamName']}")
+        if top['homeTeam']['teamName'] == "Trail Blazers":
+            return "blazers"
+
+        return top['homeTeam']['teamName'].lower().strip()
+    else:
+        return ('None')
 
 # Return time remaining in seconds
 def time_remaining(game):
+
+    if game['gameStatus'] in (1, 3):
+        return 0        # Game hasn't started or is already finished
+    
+    if "end q1" in game['gameStatusText'].lower():
+        return 36
+    
+    if "end q2" or "half" in game['gameStatusText'].lower():
+        return 24
+    
+    if "end q3" in game['gameStatusText'].lower():
+        return 12
+    
+    if "end q4" in game['gameStatusText'].lower():
+        return 0
+
     try:
-        minutes, seconds = map(int, game['gameClock'].split(":"))
+        if game['gameClock'].startswith("PT"):
+            match = re.match(r"PT(\d+)M(\d+)(?:\.\d+)?S", game['gameClock'])
+            if match:
+                minutes, seconds = int(match.group(1)), int(match.group(2))
+        else:
+            minutes, seconds = map(int, game['gameClock'].split(":"))
     except ValueError: # api glitches sometimes -- e.g. PT07M28.00S
-        print(f"Invalid clock data")
+        print(f"Invalid clock data for game {game}")
         return -1
     
     match game['period']:
@@ -190,9 +187,9 @@ def time_remaining(game):
     
     return total_seconds
 
+#def convert_time(time):
+    
+
 
 if __name__ == "__main__":
-    # app.run(port=5000)
-    most_exciting()
-
-# {'gameId': '0022400560', 'gameCode': '20250114/BKNPOR', 'gameStatus': 2, 'gameStatusText': '4th Qtr             ', 'period': 4, 'gameClock': '3:13 ', 'gameTimeUTC': '2025-01-15T03:00:00Z', 'gameEt': '2025-01-14T22:00:00Z', 'regulationPeriods': 4, 'ifNecessary': False, 'seriesGameNumber': '', 'gameLabel': '', 'gameSubLabel': '', 'seriesText': '', 'seriesConference': '', 'poRoundDesc': '', 'gameSubtype': '', 'homeTeam': {'teamId': 1610612757, 'teamName': 'Trail Blazers', 'teamCity': 'Portland', 'teamTricode': 'POR', 'wins': 13, 'losses': 25, 'score': 108, 'seed': None, 'inBonus': None, 'timeoutsRemaining': 2, 'periods': [{'period': 1, 'periodType': 'REGULAR', 'score': 30}, {'period': 2, 'periodType': 'REGULAR', 'score': 31}, {'period': 3, 'periodType': 'REGULAR', 'score': 27}, {'period': 4, 'periodType': 'REGULAR', 'score': 20}]}, 'awayTeam': {'teamId': 1610612751, 'teamName': 'Nets', 'teamCity': 'Brooklyn', 'teamTricode': 'BKN', 'wins': 13, 'losses': 26, 'score': 121, 'seed': None, 'inBonus': None, 'timeoutsRemaining': 1, 'periods': [{'period': 1, 'periodType': 'REGULAR', 'score': 40}, {'period': 2, 'periodType': 'REGULAR', 'score': 26}, {'period': 3, 'periodType': 'REGULAR', 'score': 32}, {'period': 4, 'periodType': 'REGULAR', 'score': 23}]}, 'gameLeaders': {'homeLeaders': {'personId': 1630703, 'name': 'Scoot Henderson', 'jerseyNum': '00', 'position': 'G', 'teamTricode': 'POR', 'playerSlug': None, 'points': 36, 'rebounds': 4, 'assists': 6}, 'awayLeaders': {'personId': 1629661, 'name': 'Cameron Johnson', 'jerseyNum': '2', 'position': 'F', 'teamTricode': 'BKN', 'playerSlug': None, 'points': 24, 'rebounds': 1, 'assists': 2}}, 'pbOdds': {'team': None, 'odds': 0.0, 'suspended': 0}}
+    app.run(port=5001)
