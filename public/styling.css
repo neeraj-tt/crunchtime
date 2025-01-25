@@ -17,23 +17,47 @@ body {
     font-size: 14px;
   }
 
-.scoreboard {
-    text-align: center;
-    position: relative;
+  .scoreboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin: 1em auto;
-    width: 60em;
+    padding: 0 1em;
+    width: 100%;
+    max-width: 80em;
     height: auto;
+    box-sizing: border-box;
 }
+
 
 .game {
     display: inline-block;
     width: 250px;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     padding: 5px;
     border: 2px solid rgb(0, 0, 0);
     border-radius: 25px; /* 10 or 25 or 50 */
     text-align: center;
+    box-sizing: border-box; /* Includes padding and borders in height and width*/
+}
+
+.gameShowing {
+    background-color: #be9e44;
+    display: inline-block;
+    width: 250px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 25px;
+    text-align: center;
+    box-sizing: border-box; /* Includes padding and borders in height and width*/
+    animation: fadeIn linear 1s;
 }
 
 .team-logo {
@@ -41,19 +65,6 @@ body {
     height: 20px;
     vertical-align: middle; /* Align logo with text */
     margin-right: 5px;
-}
-
-.gameShowing {
-    background-color: #be9e44;
-    display: inline-block;
-    width: 200px;
-    margin-left: 10px;
-    margin-top: 10px;
-    padding: 5px;
-    border: 2px solid rgb(0, 0, 0);
-    border-radius: 25px;
-    text-align: center;
-    animation: fadeIn linear 1s;
 }
 
 .player {
@@ -65,16 +76,16 @@ body {
     /* border: 2px solid #CBB26A; */
     margin-bottom: 1%;
     visibility: visible;
+    overflow: hidden;
 }
 
 #stream {
     visibility: hidden;
-    border: 2px solid #CBB26A; /* Add a border with a custom color */
-    border-radius: 10px; /* Optional: Rounds the corners */
-    width: 100%; /* Ensure the stream takes up the full width of its container */
-    height: 600px; /* Adjust height as needed */
-    display: block; /* Ensure it's treated as a block-level element */
-    margin: 0 auto; /* Center the stream horizontally if needed */
+    border: 2px solid #CBB26A;
+    border-radius: 10px;
+    width: 54%;
+    display: block;
+    margin: 0 auto;
 }
 
 .logo {
