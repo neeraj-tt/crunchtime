@@ -110,7 +110,7 @@ def excitement_score(game):
     q4_bonus = 1 if period == 4 else 0
     overtime_bonus = 1 if period > 4 else 0
 
-    w1, w2, w3, w4 = 0.5, 100, 1, 1.25
+    w1, w2, w3, w4 = 0.5, 25, 1, 1.25
 
     excitement_score = (
         w1 * (1 / max(score_differential, 1)) +     # Closer scores are better
